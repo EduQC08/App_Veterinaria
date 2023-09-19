@@ -9,18 +9,25 @@ class Mascota extends Conexion{
     $this->connection = parent::getConexion();
   }
 
-  public function listarMascota($data = []){
+  public function registrarMascota($data = []){
+    $respuesta = [
+      "status"  => false,
+      "message" => ""
+    ];
     try{
-      $query = $this->connection->prepare("CALL");
-      $query->execute(
+      $query = $this->connection->prepare("CALL spu_mascotas_registrar(?,?,?,?,?,?)");
+      $respuesta["status"] = $query->execute(
         array(
-          $data['idmascota']
-        )
-        );
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch(Exception $e){
-      die($e->getCode());
+          $data['idcliente'],
+          $data['idraza'],
+          $data['nombre'],
+          $data['fotografia'],
+          $data['color'],
+          $data['genero']
+        ));
+      }catch(Exception $e){
+        $respuesta["message"] = "No se pudo completar la operación Código error: " .$e->getCode();
+      }
+      return $respuesta;
     }
   }
-}
