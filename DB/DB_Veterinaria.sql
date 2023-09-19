@@ -120,7 +120,7 @@ BEGIN
 		INNER JOIN animales ON animales.idanimal = razas.idanimal
 		WHERE dni = _dni
 		ORDER BY idmascota;
-	END$$
+END$$
 
 	
 	CALL spu_clientes_buscar(72680725)
@@ -136,7 +136,7 @@ IN _claveacceso VARCHAR(100))
 BEGIN 
 	INSERT INTO clientes (apellidos, nombres, dni, claveacceso)VALUES
 	(_apellidos, _nombres, _dni, _claveacceso);
-	END$$
+END$$
 	SELECT * FROM mascotas
 -- registrar nueva mascota a un cliente
 
@@ -155,8 +155,21 @@ BEGIN
 	
 	INSERT INTO mascotas(idcliente, idraza, nombre, fotografia, color, genero)VALUES
 	(_idcliente, _idraza, _nombre, _fotografia, _color, _genero);
-	END $$
+END $$
 	
 	CALL spu_mascotas_registrar(3,3,'Firulais','','Negro', 'Macho'  )
 	
-																									
+DELIMITER $$
+CREATE PROCEDURE spu_login_user 
+(
+	IN _dni CHAR(9)
+)
+BEGIN
+	SELECT clientes.`idcliente`,
+		clientes.nombres, clientes.apellidos,
+		clientes.dni, clientes.claveacceso
+	FROM clientes
+	WHERE dni = _dni;
+END $$
+
+CALL spu_login_user('76542123')
