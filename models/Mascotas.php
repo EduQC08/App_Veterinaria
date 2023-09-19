@@ -9,16 +9,28 @@ class Mascota extends Conexion{
     $this->connection = parent::getConexion();
   }
 
-  public function listarMascota($data = []){
+  public function registrarMascota($data = []){
+    $respuesta = [
+      "status"  => false,
+      "message" => ""
+    ];
     try{
-      $query = $this->connection->prepare("CALL");
-      $query->execute(
+      $query = $this->connection->prepare("CALL spu_mascotas_registrar(?,?,?,?,?,?)");
+      $respuesta["status"] = $query->execute(
         array(
-          $data['idmascota']
-        )
-        );
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+          $data['idcliente'],
+          $data['idraza'],
+          $data['nombre'],
+          $data['fotografia'],
+          $data['color'],
+          $data['genero']
+        ));
+      }catch(Exception $e){
+        $respuesta["message"] = "No se pudo completar la operación Código error: " .$e->getCode();
+      }
+      return $respuesta;
     }
+<<<<<<< HEAD
     catch(Exception $e){
       die($e->getCode());
     }
@@ -49,3 +61,6 @@ class Mascota extends Conexion{
       return $respuesta;
     }
 }
+=======
+  }
+>>>>>>> b831066d2bacffad7e6ace3aef7bf1fb4a5f12a0
