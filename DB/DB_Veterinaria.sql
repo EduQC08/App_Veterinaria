@@ -124,6 +124,7 @@ BEGIN
 
 	
 	CALL spu_clientes_buscar(72680725)
+	SELECT * FROM clientes
 	
 
 -- Registrar cliente

@@ -23,4 +23,29 @@ class Mascota extends Conexion{
       die($e->getCode());
     }
   }
+
+
+    public function RegistrarMascota($data = []){
+
+      $respuesta = [
+        "status" => false,
+        "message" => ""
+      ];
+
+      try{
+        $consulta = $this->connection->prepare("CALL spu_mascotas_registrar(?,?,?,?,?,?)");
+        $respuesta["status"] = $consulta->execute(array(
+          $data["idcliente"],
+          $data["idraza"],
+          $data["nombre"],
+          $data["fotografia"],
+          $data["color"],
+          $data["genero"],
+        ));
+      }
+      catch(Exception $e){
+        $respuesta["message"] = "No se pudo completar la operacion";
+      }
+      return $respuesta;
+    }
 }
